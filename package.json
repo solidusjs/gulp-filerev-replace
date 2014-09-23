@@ -1,0 +1,35 @@
+{
+  "name": "gulp-filerev-replace",
+  "description": "Rev and replace files according to their mutual dependencies",
+  "version": "0.0.1",
+  "homepage": "https://github.com/solidusjs/gulp-filerev-replace",
+  "author": {
+    "name": "Joannic Laborde",
+    "email": "joannic@sparkart.com",
+    "url": "http://sparkart.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/solidusjs/gulp-filerev-replace.git"
+  },
+  "bugs": {
+    "url": "https://github.com/solidusjs/gulp-filerev-replace/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/solidusjs/gulp-filerev-replace/blob/master/LICENSE"
+    }
+  ],
+  "main": "index.js",
+  "devDependencies": {
+    "through2": "~0.6.2",
+    "gulp-util": "~3.0.1",
+    "lazypipe": "~0.2.2",
+    "multimatch": "~1.0.0",
+    "istextorbinary": "~1.0.0"
+  },
+  "keywords": [
+    "gulpplugin"
+  ]
+}
