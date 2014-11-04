@@ -22,7 +22,7 @@
     }
   ],
   "main": "index.js",
-  "devDependencies": {
+  "dependencies": {
     "through2": "~0.6.2",
     "gulp-util": "~3.0.1",
     "lazypipe": "~0.2.2",
