@@ -33,7 +33,7 @@ Options:
 
 - `filerev`: [minimatch](https://github.com/isaacs/minimatch) pattern to filter the files to filerev.
 - `replace`: [minimatch](https://github.com/isaacs/minimatch) pattern to filter the files to replace.
-- `base`: Directory from where the files are served by the web server.
+- `base`: Directory from where the files are served by the web server. Optional, defaults to the [file's base](https://github.com/gulpjs/gulp/blob/master/docs/API.md#optionsbase);
 
 TODO:
 

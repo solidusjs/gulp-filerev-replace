@@ -154,7 +154,7 @@ function escapeRegExp(str) {
 
 function webPath(file) {
   var self = this;
-  return '/' + path.relative(self.options.base || file.base, file.relative);
+  return '/' + path.relative(self.options.base || file.base, file.path);
 };
 
 function maxDepth(stack, references) {
