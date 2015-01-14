@@ -7,8 +7,8 @@ var multimatch     = require('multimatch');
 var istextorbinary = require('istextorbinary');
 
 const PLUGIN_NAME        = 'gulp-filerev-replace';
-const STARTING_DELIMITER = '(\\\\?\'|\\\\?"|\\\\?\\()';
-const ENDING_DELIMITER   = '(\\\\?\'|\\\\?"|\\\\?\\)|\\?|#)';
+const STARTING_DELIMITER = '(\\\\?\'|\\\\?"|\\\\?\\(\\s*)';
+const ENDING_DELIMITER   = '(\\\\?\'|\\\\?"|\\s*\\\\?\\)|\\?|#)';
 
 function plugin(options) {
   var self = {};

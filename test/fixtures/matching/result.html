@@ -1,0 +1,40 @@
+<!-- Absolute path -->
+<img src="/images/loader-aef3c727.gif" />
+
+var path = '/images/loader-aef3c727.gif';
+
+<!-- Delimiters -->
+<img src="/images/loader-aef3c727.gif" /><img src="/images/loader-aef3c727.gif" />
+
+var path = "/images/loader-aef3c727.gif";
+var path = '<img src="/images/loader-aef3c727.gif" />';
+var path = "var path = '/images/loader-aef3c727.gif';";
+var path = '/images/loader-aef3c727.gif', path = "/images/loader-aef3c727.gif";
+
+body { background: url("/images/loader-aef3c727.gif"); }
+body { background: url(/images/loader-aef3c727.gif); }
+body { background: url( /images/loader-aef3c727.gif    ); }
+body { background: url('/images/loader-aef3c727.gif'); background: url("/images/loader-aef3c727.gif"); }
+
+<!-- Escaped delimiters -->
+var path = "body { background: url(\"/images/loader-aef3c727.gif\"); }";
+
+body { content: "<img src=\"/images/loader-aef3c727.gif\" />"; }
+
+<!-- With query string and anchor -->
+<img src="/images/loader-aef3c727.gif?a=b" />
+<img src="/images/loader-aef3c727.gif#a" />
+
+<!-- TODO: Support this? -->
+<img src="/IMAGES/loader.gif" />
+<img src="/oops/../images/loader.gif" />
+<img src="images/loader.gif" />
+
+<!-- Invalid -->
+<img src="loader.gif" />
+<img src="/images/loader" />
+<img src="/images/loader.gif.bak" />
+<img src="/images/not-loader.gif" />
+<img src="/more/images/loader.gif" />
+<img src="/cool_images/loader.gif" />
+<img src="http://othersite.com/images/loader.gif" />
