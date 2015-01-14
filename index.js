@@ -33,7 +33,7 @@ function initialize(options) {
   return transformAllFiles(function(file, enc) {
     if (multimatch(file.relative, self.options.filerev).length) {
       self.filerev[file.relative] = {
-        regexp: new RegExp(STARTING_DELIMITER + escapeRegExp(webPath.call(self, file)) + ENDING_DELIMITER, 'g'),
+        regexp:     new RegExp(STARTING_DELIMITER + escapeRegExp(webPath.call(self, file)) + ENDING_DELIMITER, 'g'),
         references: []
       };
     }
@@ -51,11 +51,11 @@ function findReferences() {
 
   return transformAllFiles(function(file, enc) {
     if (self.replace[file.relative]) {
-      for (var src in self.filerev) {
+    for (var src in self.filerev) {
         if (self.filerev[src].regexp.test(self.replace[file.relative].contents)) {
-          self.filerev[src].references.push(file.relative);
-        }
+        self.filerev[src].references.push(file.relative);
       }
+    }
     }
   });
 };
@@ -87,32 +87,34 @@ function filerevAndReplace() {
   var self = this;
 
   return through.obj(function(file, enc, cb) {
-    var old_relative = file.relative;
+    if (file.isBuffer()) {
+      var old_relative = file.relative;
 
-    if (self.filerev[old_relative]) {
-      file.path = filerevFile(file);
-
-      gutil.log(PLUGIN_NAME, 'Filerevved: ' + old_relative + ' -> ' + file.relative);
-
-      var references = self.filerev[old_relative].references;
-      var regexp  = self.filerev[old_relative].regexp;
-      var dest    = webPath.call(self, file);
-
-      for (var i = 0; i < references.length; ++i) {
-        var reference = references[i];
-        var count  = 0;
-
-        self.replace[reference].contents = self.replace[reference].contents.replace(regexp, function(match, starting_delimiter, ending_delimiter) {
-          ++count;
-          return starting_delimiter + dest + ending_delimiter;
-        });
-
-        gutil.log(PLUGIN_NAME, 'Replaced: ' + reference + ' (' + count + ')');
+      if (self.replace[old_relative]) {
+        file.contents = new Buffer(self.replace[old_relative].contents);
       }
-    }
 
-    if (self.replace[old_relative]) {
-      file.contents = new Buffer(self.replace[old_relative].contents);
+      if (self.filerev[old_relative]) {
+        file.path = filerevFile(file);
+
+        gutil.log(PLUGIN_NAME, 'Filerevved: ' + old_relative + ' -> ' + file.relative);
+
+        var references = self.filerev[old_relative].references;
+        var regexp     = self.filerev[old_relative].regexp;
+        var dest       = webPath.call(self, file);
+
+        for (var i = 0; i < references.length; ++i) {
+          var reference = references[i];
+          var count     = 0;
+
+          self.replace[reference].contents = self.replace[reference].contents.replace(regexp, function(match, starting_delimiter, ending_delimiter) {
+            ++count;
+            return starting_delimiter + dest + ending_delimiter;
+          });
+
+          gutil.log(PLUGIN_NAME, 'Replaced: ' + reference + ' (' + count + 'x)');
+        }
+      }
     }
 
     this.push(file);
