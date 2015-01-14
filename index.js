@@ -50,12 +50,14 @@ function findReferences() {
   var self = this;
 
   return transformAllFiles(function(file, enc) {
-    if (self.replace[file.relative]) {
+    if (!self.replace[file.relative]) return;
+
+    var contents = self.replace[file.relative].contents;
+
     for (var src in self.filerev) {
-        if (self.filerev[src].regexp.test(self.replace[file.relative].contents)) {
+      if (contents.match(self.filerev[src].regexp)) {
         self.filerev[src].references.push(file.relative);
       }
-    }
     }
   });
 };
