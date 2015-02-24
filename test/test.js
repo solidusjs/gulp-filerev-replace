@@ -90,9 +90,9 @@ describe('gulp-filerev-replace', function() {
       .pipe(sa.end(done));
   });
 
-  it('with crazy delimiters', function(done) {
+  it('with folders and crazy delimiters', function(done) {
     gulp
-      .src([fixtures('matching/**/*.*'), '!' + fixtures('matching/result.html')])
+      .src([fixtures('matching/**/*'), '!' + fixtures('matching/result.html')])
       .pipe(filerevReplace())
       .pipe(sa.nth(0, function(file) {
         assert.equal(file.relative, 'images/loader-aef3c727.gif');

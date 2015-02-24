@@ -68,10 +68,12 @@ function sortByReferencesDepth() {
 
   return transformAllFiles(
     function(file, enc) {
+      if (!self.filerev[file.relative]) return;
+
       // Find the max references depth for each file
-      var filerev = self.filerev[file.relative];
+      var references = self.filerev[file.relative].references;
       try {
-        depths[file.relative] = filerev ? maxDepth.call(self, [file.relative], filerev.references) : 0;
+        depths[file.relative] = maxDepth.call(self, [file.relative], references);
       } catch(err) {
         this.emit('error', new gutil.PluginError(PLUGIN_NAME, err));
       }
@@ -79,7 +81,9 @@ function sortByReferencesDepth() {
     function(files) {
       // Sort by decreasing depth
       return files.sort(function(file1, file2) {
-        return depths[file2.relative] - depths[file1.relative];
+        var depth1 = depths[file1.relative] || 0;
+        var depth2 = depths[file2.relative] || 0;
+        return depth2 - depth1;
       });
     }
   );
