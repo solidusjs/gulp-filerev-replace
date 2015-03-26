@@ -123,6 +123,51 @@ describe('gulp-filerev-replace', function() {
         done();
       });
   });
+
+  describe('.addManifest', function() {
+    it('adds a manifest file to the stream', function(done) {
+      gulp
+        .src(fixtures('basic/*'))
+        .pipe(filerevReplace())
+        .pipe(filerevReplace.addManifest())
+        .pipe(sa.last(function(file) {
+          assert.equal(file.relative, 'filerev-replace-manifest.json');
+          assert.deepEqual(JSON.parse(file.contents), {
+            'loader.gif': 'loader-aef3c727.gif',
+            'styles.css': 'styles-b442055f.css',
+            'index.html': 'index-42012d94.html'
+          });
+        }))
+        .pipe(sa.end(done));
+    });
+
+    it('with folders', function(done) {
+      gulp
+        .src(fixtures('basic/*'), {base: fixtures('')})
+        .pipe(filerevReplace({base: fixtures('basic')}))
+        .pipe(filerevReplace.addManifest())
+        .pipe(sa.last(function(file) {
+          assert.equal(file.relative, 'filerev-replace-manifest.json');
+          assert.deepEqual(JSON.parse(file.contents), {
+            'basic/loader.gif': 'basic/loader-aef3c727.gif',
+            'basic/styles.css': 'basic/styles-b442055f.css',
+            'basic/index.html': 'basic/index-42012d94.html'
+          });
+        }))
+        .pipe(sa.end(done));
+    });
+
+    it('with options', function(done) {
+      gulp
+        .src(fixtures('basic/*'))
+        .pipe(filerevReplace())
+        .pipe(filerevReplace.addManifest({path: 'folder/file.txt'}))
+        .pipe(sa.last(function(file) {
+          assert.equal(file.relative, 'folder/file.txt');
+        }))
+        .pipe(sa.end(done));
+    });
+  });
 });
 
 var fixtures = function(glob) {

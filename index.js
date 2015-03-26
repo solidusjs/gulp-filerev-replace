@@ -9,6 +9,7 @@ var istextorbinary = require('istextorbinary');
 const PLUGIN_NAME        = 'gulp-filerev-replace';
 const STARTING_DELIMITER = '(\\\\?\'|\\\\?"|\\\\?\\(\\s*)';
 const ENDING_DELIMITER   = '(\\\\?\'|\\\\?"|\\s*\\\\?\\)|\\?|#)';
+const MANIFEST_OPTIONS   = {path: 'filerev-replace-manifest.json'};
 
 function plugin(options) {
   var self = {};
@@ -20,6 +21,23 @@ function plugin(options) {
     .pipe(filerevAndReplace.bind(self))
   )();
 };
+
+plugin.addManifest = function(options) {
+  var manifest      = {};
+  var manifest_file = new gutil.File(options || MANIFEST_OPTIONS);
+
+  return through.obj(function(file, enc, cb) {
+    if (file.old_relative) manifest[file.old_relative] = file.relative;
+    this.push(file);
+    cb();
+  }, function(cb) {
+    manifest_file.contents = new Buffer(JSON.stringify(manifest, null, 2));
+    this.push(manifest_file);
+    cb();
+  });
+};
+
+// PRIVATE
 
 function initialize(options) {
   var self = this;
@@ -101,7 +119,8 @@ function filerevAndReplace() {
       }
 
       if (self.filerev[old_relative]) {
-        file.path = filerevFile(file);
+        file.path         = filerevFile(file);
+        file.old_relative = old_relative;
 
         gutil.log(PLUGIN_NAME, 'Filerevved: ' + old_relative + ' -> ' + file.relative);
 
